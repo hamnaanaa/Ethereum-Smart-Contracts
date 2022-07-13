@@ -1,57 +1,57 @@
-const BBSEToken = artifacts.require("BBSEToken");
-const BBSEBank = artifacts.require("BBSEBank");
+const HAMToken = artifacts.require("HAMToken");
+const HBank = artifacts.require("HBank");
 
-contract("BBSEBank", (accounts) => {
-  let bbseToken, bbseBank;
+contract("HBank", (accounts) => {
+  let hamToken, hBank;
 
   // Success scenarios
   describe("success", () => {
-    /* A new instance of BBSEToken and BBSEBank contracts set before each test case.
-     * The minter role is initially passed to BBSEBank such that it can mint tokens
+    /* A new instance of HAMToken and HBank contracts set before each test case.
+     * The minter role is initially passed to HBank such that it can mint tokens
      * when paying out the interests.
      */
     beforeEach(async () => {
-      bbseToken = await BBSEToken.new();
-      bbseBank = await BBSEBank.new(bbseToken.address, 10); // Sets the yearly return rate to 10
-      await bbseToken.passMinterRole(bbseBank.address, { from: accounts[0] });
+      hamToken = await HAMToken.new();
+      hBank = await HBank.new(hamToken.address, 10); // Sets the yearly return rate to 10
+      await hamToken.passMinterRole(hBank.address, { from: accounts[0] });
     });
 
     it("should set the yearly return rate correctly", async () => {
-      assert.equal(await bbseBank.yearlyReturnRate(), 10);
+      assert.equal(await hBank.yearlyReturnRate(), 10);
     });
 
     it("should deposit correctly", async () => {
-      await bbseBank.deposit({ value: 10 ** 18, from: accounts[1] }); // Decimal is set to 18 by default in ERC20 OpenZeppelin (Unit = Wei)
-      const investor = await bbseBank.investors(accounts[1]);
+      await hBank.deposit({ value: 10 ** 18, from: accounts[1] }); // Decimal is set to 18 by default in ERC20 OpenZeppelin (Unit = Wei)
+      const investor = await hBank.investors(accounts[1]);
       assert.equal(investor.hasActiveDeposit, true);
       assert.equal(Number(investor.amount), 10 ** 18); // Since the amount is a big number (BN), it is better be cast to a Number for convenience
       expect(Number(investor.startTime)).to.be.above(0);
-      expect(Number(await web3.eth.getBalance(bbseBank.address))).to.be.above(
+      expect(Number(await web3.eth.getBalance(hBank.address))).to.be.above(
         0
       ); // Use web3 to find the Ether balance of any account
     });
 
     it("should withdraw correctly", async () => {
-      await bbseBank.deposit({ value: 10 ** 18, from: accounts[1] });
-      await bbseBank.deposit({ value: 10 ** 18, from: accounts[2] });
+      await hBank.deposit({ value: 10 ** 18, from: accounts[1] });
+      await hBank.deposit({ value: 10 ** 18, from: accounts[2] });
 
       const oldEthBalance = Number(await web3.eth.getBalance(accounts[1]));
-      await bbseBank.withdraw({
+      await hBank.withdraw({
         from: accounts[1],
       });
       const newEthBalance = Number(await web3.eth.getBalance(accounts[1]));
       expect(Number(newEthBalance)).to.be.above(oldEthBalance);
 
-      const tokenBalance = Number(await bbseToken.balanceOf(accounts[1]));
+      const tokenBalance = Number(await hamToken.balanceOf(accounts[1]));
       expect(tokenBalance).to.be.above(0);
 
-      const investor = await bbseBank.investors(accounts[1]);
+      const investor = await hBank.investors(accounts[1]);
       assert.equal(investor.hasActiveDeposit, false);
       assert.equal(investor.amount, 0);
 
       // Only the deposited amount by accounts[2] should be left in the contract balance
       assert.equal(
-        Number(await web3.eth.getBalance(bbseBank.address)),
+        Number(await web3.eth.getBalance(hBank.address)),
         10 ** 18
       );
     });
@@ -62,21 +62,21 @@ contract("BBSEBank", (accounts) => {
     it("should reject invalid yearly return rate", async () => {
       let err;
       try {
-        bbseToken = await BBSEToken.new();
-        bbseBank = await BBSEBank.new(bbseToken.address, 1000);
+        hamToken = await HAMToken.new();
+        hBank = await HBank.new(hamToken.address, 1000);
       } catch (e) {
         err = e;
       }
       assert.notEqual(err, undefined, "Error must be thrown");
-      assert.equal(err.reason, "Yearly return rate must be between 1 and 100"); // Use this error message in your BBSEBank constructor
+      assert.equal(err.reason, "Yearly return rate must be between 1 and 100"); // Use this error message in your HBank constructor
     });
 
     it("should reject invalid deposit amount", async () => {
       let err;
       try {
-        bbseToken = await BBSEToken.new();
-        bbseBank = await BBSEBank.new(bbseToken.address, 10);
-        await bbseBank.deposit({ value: 10 ** 17, from: accounts[1] });
+        hamToken = await HAMToken.new();
+        hBank = await HBank.new(hamToken.address, 10);
+        await hBank.deposit({ value: 10 ** 17, from: accounts[1] });
       } catch (e) {
         err = e;
       }
@@ -87,10 +87,10 @@ contract("BBSEBank", (accounts) => {
     it("should reject account having multiple active deposit", async () => {
       let err;
       try {
-        bbseToken = await BBSEToken.new();
-        bbseBank = await BBSEBank.new(bbseToken.address, 10);
-        await bbseBank.deposit({ value: 10 ** 18, from: accounts[1] });
-        await bbseBank.deposit({ value: 10 ** 18, from: accounts[1] });
+        hamToken = await HAMToken.new();
+        hBank = await HBank.new(hamToken.address, 10);
+        await hBank.deposit({ value: 10 ** 18, from: accounts[1] });
+        await hBank.deposit({ value: 10 ** 18, from: accounts[1] });
       } catch (e) {
         err = e;
       }
@@ -101,9 +101,9 @@ contract("BBSEBank", (accounts) => {
     it("should reject withdraw with no active deposit", async () => {
       let err;
       try {
-        bbseToken = await BBSEToken.new();
-        bbseBank = await BBSEBank.new(bbseToken.address, 10);
-        await bbseBank.withdraw({ from: accounts[1] });
+        hamToken = await HAMToken.new();
+        hBank = await HBank.new(hamToken.address, 10);
+        await hBank.withdraw({ from: accounts[1] });
       } catch (e) {
         err = e;
       }

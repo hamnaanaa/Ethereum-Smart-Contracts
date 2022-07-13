@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./BBSEToken.sol";
+import "./HAMToken.sol";
 
-contract BBSEBank {
-  // BBSE Token Contract instance
-  BBSEToken private bbseTokenContract;
+contract HBank {
+  // HAM Token Contract instance
+  HAMToken private hamTokenContract;
   
   // Yearly return rate of the bank
   uint32 public yearlyReturnRate;
@@ -36,16 +36,16 @@ contract BBSEBank {
   mapping (address => Investor) public investors;
 
   /**
-  * @dev Initializes the bbseTokenContract with the provided contract address.
+  * @dev Initializes the hamTokenContract with the provided contract address.
   * Sets the yearly return rate for the bank.
   * Yearly return rate must be between 1 and 100.
   * Calculates and sets the interest earned per second for a minumum deposit amount
   * based on the yearly return rate.
-  * @param _bbseTokenContract address of the deployed BBSEToken contract
+  * @param _hamTokenContract address of the deployed HAMToken contract
   * @param _yearlyReturnRate yearly return rate of the bank
   */
-  constructor (address _bbseTokenContract, uint32 _yearlyReturnRate) public {
-    bbseTokenContract = BBSEToken(_bbseTokenContract);
+  constructor (address _hamTokenContract, uint32 _yearlyReturnRate) public {
+    hamTokenContract = HAMToken(_hamTokenContract);
     
     // TODO: Check yearly return rate and set the variable
 
@@ -67,7 +67,7 @@ contract BBSEBank {
   * @dev Calculates the interest to be paid out based
   * on the deposit amount and duration.
   * Transfers back the deposited amount in Ether.
-  * Mints BBSE tokens to investor to pay the interest (1 token = 1 interest).
+  * Mints HAM tokens to investor to pay the interest (1 token = 1 interest).
   * Resets the respective investor object in investors mapping.
   * Investor must have an active deposit.
   */
@@ -92,7 +92,7 @@ contract BBSEBank {
     *        Dont' forget to cast the investor address to a payable address
     */
 
-    // TODO: Mint BBSE tokens to to pay out the interest
+    // TODO: Mint HAM tokens to to pay out the interest
 
     /* TODO: Reset the respective investor object in investors mapping
     *        You can set the amount and start time to 0

@@ -1,16 +1,16 @@
-const BBSEToken = artifacts.require("BBSEToken");
-const BBSEBank = artifacts.require("BBSEBank");
+const HAMToken = artifacts.require("HAMToken");
+const HBank = artifacts.require("HBank");
 
 module.exports = async function (deployer) {
-  // Deploy BBSEToken
-  await deployer.deploy(BBSEToken);
-  const bbseToken = await BBSEToken.deployed();
+  // Deploy HAMToken
+  await deployer.deploy(HAMToken);
+  const hamToken = await HAMToken.deployed();
 
-  // Deploy BBSEBank with BBSEToken contract's address
+  // Deploy HBank with HAMToken contract's address
   // and a yearly return rate of 10
-  await deployer.deploy(BBSEBank, bbseToken.address, 10);
-  const bbseBank = await BBSEBank.deployed();
+  await deployer.deploy(HBank, hamToken.address, 10);
+  const hBank = await HBank.deployed();
 
-  // Pass the minter role in BBSEToken to BBSEBank
-  await bbseToken.passMinterRole(bbseBank.address);
+  // Pass the minter role in HAMToken to HBank
+  await hamToken.passMinterRole(hBank.address);
 };
