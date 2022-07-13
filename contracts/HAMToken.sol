@@ -12,8 +12,8 @@ contract HAMToken is ERC20 {
      * Sets the minter as the contract deployer.
      */
     constructor() public payable ERC20("HAM TOKEN", "HAM") {
-      // Set deployer of the contract as the initial minter
-      minter = msg.sender;
+        // Set deployer of the contract as the initial minter
+        minter = msg.sender;
     }
 
     /**
@@ -22,9 +22,9 @@ contract HAMToken is ERC20 {
      * @param _minter address of the new minter
      */
     function passMinterRole(address _minter) public {
-      // Check if the active caller has the minter role
-      require(msg.sender == minter, "You are not the minter");
-      minter = _minter;
+        // Check if the active caller has the minter role
+        require(msg.sender == minter, "You are not the minter");
+        minter = _minter;
     }
 
     /**
@@ -34,8 +34,8 @@ contract HAMToken is ERC20 {
      * @param amount amount of the tokens to be issued
      */
     function mint(address account, uint256 amount) public {
-      // Check if the active caller has the minter role
-      require(msg.sender == minter, "You are not the minter");
-      _mint(account, amount);
+        // Check if the active caller has the minter role
+        require(msg.sender == minter, "You are not the minter");
+        _mint(account, amount);
     }
 }

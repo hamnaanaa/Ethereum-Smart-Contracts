@@ -68,7 +68,7 @@ contract("HBank", (accounts) => {
         err = e;
       }
       assert.notEqual(err, undefined, "Error must be thrown");
-      assert.equal(err.reason, "Yearly return rate must be between 1 and 100"); // Use this error message in your HBank constructor
+      assert.equal(err.reason, "Yearly return rate must be between 1% and 100%"); // Use this error message in your HBank constructor
     });
 
     it("should reject invalid deposit amount", async () => {
