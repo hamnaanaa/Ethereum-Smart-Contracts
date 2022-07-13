@@ -1,6 +1,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# Ethereum-Smart-Contracts
+# Ethereum Smart Contracts Library
 A collection of different ethereum smart contracts offering various blockchain-based functionalities.
 
 This project utilizes a number of useful tools simplifying the whole smart contract development, testing, and deployment. Here's a list of the most important ones:
