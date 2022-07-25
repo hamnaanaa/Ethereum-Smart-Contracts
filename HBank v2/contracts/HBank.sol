@@ -195,7 +195,7 @@ contract HBank is Ownable {
         // Get the latest price feed rate for ETH/HAM from the price feed oracle
         uint256 priceFeedRate = oracleContract.getRate();
 
-        unit collateral = (amount * COLLATERALIZATION_RATIO * priceFeedRate) /
+        uint collateral = (amount * COLLATERALIZATION_RATIO * priceFeedRate) /
             100;
 
         /* Try to transfer HAM tokens from msg.sender (i.e. borrower) to HBank.
@@ -215,9 +215,9 @@ contract HBank is Ownable {
         payable(msg.sender).transfer(amount);
 
         // Initialize the borrower in borrowers mapping
-        borrowers[msg.sender].hasActiveDeposit = true;
+        borrowers[msg.sender].hasActiveLoan = true;
         borrowers[msg.sender].amount = amount;
-        borrowsers[msg.sender].collateral = collateral;
+        borrowers[msg.sender].collateral = collateral;
     }
 
     /**
