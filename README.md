@@ -34,15 +34,16 @@ The interest is calculated based on a pre-defined yearly return rate. Although t
 
 ## Additional Info & Testing
 
-For more details about the expected functionality, consider checking the project's tests or running
+For more details about the expected functionality, consider checking the project's tests. E.g. running
 
     truffle test test/hamtoken.test.js
 
-and
-
     truffle test test/hbank.test.js
 
-in the corresponding project subfolders to see the smart contract callbacks in action.
+    truffle test test/oracle.test.js
+
+
+in the corresponding project subfolders allows to see the smart contract callbacks in action and to ensure that the contract's logic is valid.
 
 # Migration to Rinkeby
 
