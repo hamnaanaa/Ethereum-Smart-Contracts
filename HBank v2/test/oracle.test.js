@@ -27,11 +27,11 @@ contract("ETHHAMPriceFeedOracle", (accounts) => {
 
     it("should emit GetNewRate event with ETH/HAM as the priceFeed, when getRate is called while the last rate update is older than 3 blocks", async () => {
       hamToken = await HAMToken.new();
-      hamBank = await HBank.new(hamToken.address, 10, oracle.address);
+      hBank = await HBank.new(hamToken.address, 10, oracle.address);
 
       // Some random transactions to increase the block number
-      await hamBank.deposit({ from: accounts[1], value: 10 ** 18 });
-      await hamBank.deposit({ from: accounts[2], value: 10 ** 18 });
+      await hBank.deposit({ from: accounts[1], value: 10 ** 18 });
+      await hBank.deposit({ from: accounts[2], value: 10 ** 18 });
 
       const tx = await oracle.getRate({ from: accounts[1] });
 
@@ -67,7 +67,7 @@ contract("ETHHAMPriceFeedOracle", (accounts) => {
 
     it("should not emit GetNewRate when last rate update is not older than 3 blocks", async () => {
       hamToken = await HAMToken.new();
-      hamBank = await HBank.new(hamToken.address, 10, oracle.address);
+      hBank = await HBank.new(hamToken.address, 10, oracle.address);
 
       const tx = await oracle.getRate({ from: accounts[1] });
 
