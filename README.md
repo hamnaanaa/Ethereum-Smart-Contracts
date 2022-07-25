@@ -32,7 +32,9 @@ HBank is a decentralized application (dApp) that enables users to earn interest 
 The interest is calculated based on a pre-defined yearly return rate. Although the users can withdraw their Ether back anytime they want, the longer the deposit stays, the more interest they earn. The interest is paid in the form of H token which is an ERC20 token. In HBank 2.0, the users can now borrow ETH by collateralizing their HAM tokens.
 
 
-For more functionality details, consider reading/running
+## Additional Info & Testing
+
+For more details about the expected functionality, consider checking the project's tests or running
 
     truffle test test/hamtoken.test.js
 
